@@ -1,4 +1,4 @@
-package org.example;
+package main;
 
 import opennlp.tools.tokenize.SimpleTokenizer;
 import org.nd4j.linalg.api.ndarray.INDArray;
