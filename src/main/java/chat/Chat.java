@@ -5,13 +5,13 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import model.Model;
+import model.Model;
 
 public class Chat extends JFrame{
     private final JTextArea chatArea = new JTextArea();
     private final JTextField chatBox = new JTextField();
+    private final Model model = new Model("");
 
-    //    private final Model model = new Model();
     public Chat() {
         JFrame frame = new JFrame();
         frame.setTitle("F.R.I.D.A.Y");
@@ -41,6 +41,9 @@ public class Chat extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = chatBox.getText();
+                if (text.isEmpty()) {
+                    return;
+                }
                 chatArea.append("YOU: " + text + "\n\n");
                 chatArea.append("F.R.I.D.A.Y: " + botResponse(text) + "\n\n");
                 chatBox.setText("");
@@ -65,6 +68,9 @@ public class Chat extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = chatBox.getText();
+                if (text.isEmpty()) {
+                    return;
+                }
                 chatArea.append("YOU: " + text + "\n\n");
                 chatArea.append("F.R.I.D.A.Y: " + botResponse(text) + "\n\n");
                 chatBox.setText("");
@@ -76,7 +82,6 @@ public class Chat extends JFrame{
     }
 
     private String botResponse(String input){
-//        model
-        return "Huh?";
+        return model.answerTo(input);
     }
 }

@@ -1,8 +1,6 @@
 package model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
@@ -22,6 +20,23 @@ import opennlp.tools.util.TrainingParameters;
 import opennlp.tools.util.model.ModelUtil;
 
 public class Model {
+    public Model(String pathToBin){
+
+        try {
+            trainModel(pathToBin);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void trainModel(String path) throws IOException, FileNotFoundException {
+
+    }
+
+    public String answerTo(String input) {
+        return "Huh?";
+    }
 }
 //import opennlp.tools.doccat.*;
 //import opennlp.tools.lemmatizer.LemmatizerME;
