@@ -8,11 +8,17 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Model {
-    private final InputStream modelIn;
+    private InputStream modelIn;
     private SentenceModel mod;
     private final SentenceDetectorME detector;
     public Model(String pathToBin) throws IOException {
-         modelIn = new FileInputStream(pathToBin);
+
+        try{
+            modelIn = new FileInputStream(pathToBin);
+        } catch(IOException e){
+            System.out.println("File not found");
+            throw e;
+        }
         try{
             this.mod = new SentenceModel(modelIn);
         } catch(IOException e){
