@@ -11,7 +11,7 @@ import model.Model;
 public class Chat extends JFrame{
     private final JTextArea chatArea = new JTextArea();
     private final JTextField chatBox = new JTextField();
-    private Model model;
+    private final Model model;
     private final ActionListener AL = e -> {
         String text = chatBox.getText();
         if (text.isEmpty()) {
