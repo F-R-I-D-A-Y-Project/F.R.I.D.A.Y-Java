@@ -3,7 +3,6 @@ package chat;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import model.Model;
 
@@ -11,33 +10,40 @@ public class Chat extends JFrame{
     private final JTextArea chatArea = new JTextArea();
     private final JTextField chatBox = new JTextField();
     private final Model model = new Model("");
+    private final ActionListener AL = e -> {
+        String text = chatBox.getText();
+        if (text.isEmpty()) {
+            return;
+        }
+        chatArea.append("YOU: " + text + "\n\n");
+        chatArea.append("F.R.I.D.A.Y: " + botResponse(text) + "\n\n");
+        chatBox.setText("");
+    };
 
     /**
      * Creates a chat window.
      */
     public Chat() {
-        JFrame frame = newFrame();
+        JFrame frame = createFrame();
 
         editChatArea(frame);
-        editChatBox(frame);
+
+        int thickness = 2;
+        editChatBox(frame, thickness);
 
         JButton send = sendButton();
         send.setLocation(500, 700);
         frame.add(send);
 
-        int scrollBarThickness = 20;
-        JScrollPane scroll = newScrollPanel(scrollBarThickness, frame);
+        JScrollPane scroll = createScrollPanel();
         frame.add(scroll);
-
     }
 
     /**
      * Creates a new scroll panel.
-     * @param scrollBarThickness: int
-     * @param frame: JFrame
      * @return JScrollPane
      */
-    private JScrollPane newScrollPanel(int scrollBarThickness, JFrame frame) {
+    private JScrollPane createScrollPanel() {
         JScrollPane scroll = new JScrollPane(chatArea);
         scroll.setSize(620, 700);
         scroll.setLocation(2,2);
@@ -47,25 +53,14 @@ public class Chat extends JFrame{
     /**
      * Edits the chat box.
      * @param frame: JFrame
+     * @param thickness: int
      */
-    private void editChatBox(JFrame frame) {
+    private void editChatBox(JFrame frame, int thickness) {
         chatBox.setSize(500, 30);
         chatBox.setLocation(0, 702);
-        int thickness = 2;
         Border customBorder = BorderFactory.createMatteBorder(thickness, thickness, thickness, thickness, Color.BLACK);
         chatBox.setBorder(customBorder);
-        chatBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String text = chatBox.getText();
-                if (text.isEmpty()) {
-                    return;
-                }
-                chatArea.append("YOU: " + text + "\n\n");
-                chatArea.append("F.R.I.D.A.Y: " + botResponse(text) + "\n\n");
-                chatBox.setText("");
-            }
-        });
+        chatBox.addActionListener(AL);
         frame.add(chatBox);
 
     }
@@ -90,7 +85,7 @@ public class Chat extends JFrame{
      * Creates a new JFrame.
      * @return JFrame
      */
-    private JFrame newFrame() {
+    private JFrame createFrame() {
         JFrame frame = new JFrame();
         frame.setTitle("F.R.I.D.A.Y");
         frame.setResizable(false);
@@ -107,18 +102,7 @@ public class Chat extends JFrame{
      */
     private JButton sendButton() {
         JButton send = new JButton("Send");
-        send.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String text = chatBox.getText();
-                if (text.isEmpty()) {
-                    return;
-                }
-                chatArea.append("YOU: " + text + "\n\n");
-                chatArea.append("F.R.I.D.A.Y: " + botResponse(text) + "\n\n");
-                chatBox.setText("");
-            }
-        });
+        send.addActionListener(AL);
 
         send.setSize(120, 32);
         return send;
