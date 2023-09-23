@@ -7,9 +7,6 @@ Java project developed for the discipline "Laboratório de Programação 2", at 
 
 F.R.I.D.A.Y is a personal assistant AI developed in Java...
 
-Architecture used: Transformers
-...
-
 ## Team members
 
 - Fabricio Asfora Romero Assunção
