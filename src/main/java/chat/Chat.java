@@ -11,7 +11,7 @@ import model.Model;
 public class Chat extends JFrame{
     private final JTextArea chatArea = new JTextArea();
     private final JTextField chatBox = new JTextField();
-    private final Model model = new Model("opennlp-en-ud-ewt-sentence-1.0-1.9.3.bin");
+    private Model model;
     private final ActionListener AL = e -> {
         String text = chatBox.getText();
         if (text.isEmpty()) {
@@ -26,6 +26,12 @@ public class Chat extends JFrame{
      * Creates a chat window.
      */
     public Chat() throws IOException {
+        try{
+            this.model = new Model("opennlp-en-ud-ewt-sentence-1.0-1.9.3.bin");
+        } catch(IOException e){
+            System.out.println("file not found");
+            throw e;
+        }
         JFrame frame = createFrame();
 
         editChatArea(frame);
