@@ -23,11 +23,7 @@ As of now, F.R.I.D.A.Y is compatible with Java (20-23)
 ### Frameworks used
 
 - OpenNLP
-- DL4J
-- Weka
-
-## How to use
-...
+- Swing
 
 ## Documentation
 

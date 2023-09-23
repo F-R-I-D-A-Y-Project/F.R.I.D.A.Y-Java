@@ -25,11 +25,11 @@ public class Chat extends JFrame{
     /**
      * Creates a chat window.
      */
-    public Chat() throws IOException {
+    public Chat(String pathToBin) throws IOException {
         try{
-            this.model = new Model("opennlp-en-ud-ewt-sentence-1.0-1.9.3.bin");
+            this.model = new Model(pathToBin);
         } catch(IOException e){
-            System.out.println("file not found");
+            System.out.println("Could not initialize model");
             throw e;
         }
         JFrame frame = createFrame();
