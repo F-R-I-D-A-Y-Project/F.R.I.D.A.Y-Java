@@ -4,14 +4,13 @@ import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class Model {
-    private InputStream modelIn;
+    private final InputStream modelIn;
     private SentenceModel mod;
-    private SentenceDetectorME detector;
+    private final SentenceDetectorME detector;
     public Model(String pathToBin) throws IOException {
          modelIn = new FileInputStream(pathToBin);
         try{
@@ -24,6 +23,7 @@ public class Model {
                     modelIn.close();
                 }
                 catch (IOException e) {
+
                 }
             }
         }
