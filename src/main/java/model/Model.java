@@ -9,10 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Model {
-    private InputStream modelIn = new FileInputStream("opennlp-en-ud-ewt-sentence-1.0-1.9.3.bin");
+    private InputStream modelIn;
     private SentenceModel mod;
     private SentenceDetectorME detector;
     public Model(String pathToBin) throws IOException {
+         modelIn = new FileInputStream(pathToBin);
         try{
             this.mod = new SentenceModel(modelIn);
         } catch(IOException e){

@@ -4,12 +4,14 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import model.Model;
 
 public class Chat extends JFrame{
     private final JTextArea chatArea = new JTextArea();
     private final JTextField chatBox = new JTextField();
-    private final Model model = new Model("");
+    private final Model model = new Model("opennlp-en-ud-ewt-sentence-1.0-1.9.3.bin");
     private final ActionListener AL = e -> {
         String text = chatBox.getText();
         if (text.isEmpty()) {
@@ -23,7 +25,7 @@ public class Chat extends JFrame{
     /**
      * Creates a chat window.
      */
-    public Chat() {
+    public Chat() throws IOException {
         JFrame frame = createFrame();
 
         editChatArea(frame);
