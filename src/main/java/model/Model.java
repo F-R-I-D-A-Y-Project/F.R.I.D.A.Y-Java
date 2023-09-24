@@ -6,7 +6,6 @@ import opennlp.tools.sentdetect.SentenceModel;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 
 /**
  * Creates a NLP model to be used in the chatbot.
@@ -18,17 +17,17 @@ public class Model {
     private final SentenceDetectorME detector;
 
     /**
-     * A HashMap containing the responses to the user's input.
+     * Object responsible for formulating the response to a prompt.
      */
-    private final HashMap<String, String> responses = new HashMap<String, String>();
+    private final DataSetManager dataSetManager;
 
     /**
      * Creates a new model.
      * @param pathToBin String
      *                  The path to the auxiliary binary file.
      */
-    public Model(String pathToBin) throws IOException {
-
+    public Model(String pathToBin, String pathToDataSet) throws IOException {
+        dataSetManager = new DataSetManager(pathToDataSet);
         try{
             modelIn = new FileInputStream(pathToBin);
         } catch(IOException e){
@@ -53,16 +52,6 @@ public class Model {
     }
 
     /**
-     * Adds all responses to the HashMap.
-     */
-    private void addResponses(){
-        responses.put("Hello", "Hello, how are you?");
-        responses.put("How are you?", "I'm fine, thank you.");
-        responses.put("What is your name?", "My name is F.R.I.D.A.Y.");
-
-    }
-
-    /**
      * Detect sentences in the input string.
      * @param input String
      *              The string to be sentence detected.
@@ -73,14 +62,16 @@ public class Model {
         String[] sentences = detector.sentDetect(input);
         StringBuilder responseBuilder = new StringBuilder();
         for (String sentence : sentences) {
-            System.out.println(sentence.trim());
-            String response = responses.get(sentence.trim());
-            System.out.println(response);
+            String response = dataSetManager.get(sentence);
             if (response != null) {
-                responseBuilder.append(response).append(". ");
+                if(response.endsWith(".") || response.endsWith("?") || response.endsWith("!") || response.endsWith(" ")){
+                    responseBuilder.append(response).append(" ");
+                } else {
+                    responseBuilder.append(response).append(".");
+                }
+                responseBuilder.append("\n");
             }
         }
-
         return responseBuilder.toString().trim();
     }
 }
