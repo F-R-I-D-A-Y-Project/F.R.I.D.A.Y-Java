@@ -138,7 +138,7 @@ public class Chat extends JFrame{
      * @return String
      */
     private String botResponse(String input){
-
+//        System.out.println(model.answerTo(input));
         return model.answerTo(input);
     }
 }
