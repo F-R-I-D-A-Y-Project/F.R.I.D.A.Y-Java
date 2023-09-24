@@ -7,8 +7,12 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import model.Model;
+import org.jetbrains.annotations.NotNull;
 
 public class Chat extends JFrame{
+    /**
+     * Creates a chat window.
+     */
     private final JTextArea chatArea = new JTextArea();
     private final JTextField chatBox = new JTextField();
     private final Model model;
@@ -22,10 +26,12 @@ public class Chat extends JFrame{
         chatBox.setText("");
     };
 
-    /**
-     * Creates a chat window.
-     */
     public Chat(String pathToBin) throws IOException {
+        /**
+         * Creates a new chat window.
+         * @param pathToBin String
+         *                  The path to the auxiliary binary file.
+         */
         try{
             this.model = new Model(pathToBin);
         } catch(IOException e){
@@ -47,23 +53,25 @@ public class Chat extends JFrame{
         frame.add(scroll);
     }
 
-    /**
-     * Creates a new scroll panel.
-     * @return JScrollPane
-     */
+
+    @NotNull
     private JScrollPane createScrollPanel() {
+        /**
+         * Creates a new scroll panel.
+         * @return JScrollPane
+         */
         JScrollPane scroll = new JScrollPane(chatArea);
         scroll.setSize(620, 700);
         scroll.setLocation(2,2);
         return scroll;
     }
 
-    /**
-     * Edits the chat box.
-     * @param frame: JFrame
-     * @param thickness: int
-     */
-    private void editChatBox(JFrame frame, int thickness) {
+    private void editChatBox(@NotNull JFrame frame, int thickness) {
+        /**
+         * Edits the chat box.
+         * @param frame: JFrame
+         * @param thickness: int
+         */
         chatBox.setSize(500, 30);
         chatBox.setLocation(0, 702);
         Border customBorder = BorderFactory.createMatteBorder(thickness, thickness, thickness, thickness, Color.BLACK);
@@ -73,11 +81,11 @@ public class Chat extends JFrame{
 
     }
 
-    /**
-     * Edits the chat area.
-     * @param frame: JFrame
-     */
-    private void editChatArea(JFrame frame) {
+    private void editChatArea(@org.jetbrains.annotations.NotNull JFrame frame) {
+        /**
+         * Edits the chat area.
+         * @param frame: JFrame
+         */
         frame.add(chatArea);
         chatArea.setSize(620, 700);
         chatArea.setLocation(2, 2);
@@ -89,11 +97,12 @@ public class Chat extends JFrame{
         chatArea.setEditable(false);
     }
 
-    /**
-     * Creates a new JFrame.
-     * @return JFrame
-     */
+    @NotNull
     private JFrame createFrame() {
+        /**
+         * Creates a new JFrame.
+         * @return JFrame
+         */
         JFrame frame = new JFrame();
         frame.setTitle("F.R.I.D.A.Y");
         frame.setResizable(false);
@@ -104,11 +113,12 @@ public class Chat extends JFrame{
         return frame;
     }
 
-    /**
-     * Creates a button that sends the text in the chat box to the chat area.
-     * @return JButton
-     */
+    @NotNull
     private JButton sendButton() {
+        /**
+         * Creates a button that sends the text in the chat box to the chat area.
+         * @return JButton
+         */
         JButton send = new JButton("Send");
         send.addActionListener(AL);
 
@@ -116,12 +126,13 @@ public class Chat extends JFrame{
         return send;
     }
 
-    /**
-     * Returns the bot's response to the user's input.
-     * @param input: String
-     * @return String
-     */
+
     private String botResponse(String input){
+        /**
+         * Returns the bot's response to the user's input.
+         * @param input: String
+         * @return String
+         */
         return model.answerTo(input);
     }
 }
