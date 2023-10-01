@@ -19,7 +19,7 @@ public class Model {
     /**
      * Object responsible for formulating the response to a prompt.
      */
-    private final DataSetManager dataSetManager;
+    private final ResponseBuilder dataSetManager;
 
     /**
      * Creates a new model.
@@ -27,7 +27,7 @@ public class Model {
      *                  The path to the auxiliary binary file.
      */
     public Model(String pathToBin, String pathToDataSet) throws IOException {
-        dataSetManager = new DataSetManager(pathToDataSet);
+        dataSetManager = new ResponseBuilder(pathToDataSet);
         try{
             modelIn = new FileInputStream(pathToBin);
         } catch(IOException e){
