@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Unnecessary ###
+WikiQACorpus/**
+!WikiQACorpus/WikiQA-train.txt

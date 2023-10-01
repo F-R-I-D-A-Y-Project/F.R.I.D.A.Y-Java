@@ -17,25 +17,31 @@ public class Chat extends JFrame{
     private final JTextArea chatArea = new JTextArea();
     private final JTextField chatBox = new JTextField();
     private final Model model;
+    private String lastAnswer = "";
     private final ActionListener AL = e -> {
         String text = chatBox.getText();
         if (text.isEmpty()) {
             return;
         }
+        else if(text.equals(lastAnswer)){
+
+        }
         chatArea.append("YOU: " + text + "\n\n");
         chatArea.append("F.R.I.D.A.Y: " + botResponse(text) + "\n\n");
         chatBox.setText("");
+        lastAnswer = text;
     };
+
 
     /**
      * Creates a new chat window.
      * @param pathToBin String
      *                  The path to the auxiliary binary file.
      */
-    public Chat(String pathToBin) throws IOException {
+    public Chat(String pathToBin, String pathToDataSet) throws IOException {
 
         try{
-            this.model = new Model(pathToBin);
+            this.model = new Model(pathToBin, pathToDataSet);
         } catch(IOException e){
             System.out.println("Could not initialize model");
             throw e;
@@ -138,7 +144,6 @@ public class Chat extends JFrame{
      * @return String
      */
     private String botResponse(String input){
-//        System.out.println(model.answerTo(input));
         return model.answerTo(input);
     }
 }
