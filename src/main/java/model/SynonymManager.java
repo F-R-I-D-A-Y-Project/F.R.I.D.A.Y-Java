@@ -33,14 +33,14 @@ public class SynonymManager {
      * @return String
      *              The response to the user's input.
      */
-    public Stream<String> getSynonyms(String input){
+    private Stream<String> getSynonyms(String input){
         try (CSVReader reader = new CSVReader(new FileReader(pathToDataSet))) {
             String[] line;
             while((line = reader.readNext()) != null){
                 if(line[0].equals(input)){
-                    String[] synonyms = line[2].split("[;|]");
+                    String[] synonyms = line[2].split(";");
                     System.out.println(Arrays.toString(synonyms));
-                    return Arrays.stream(synonyms).filter(s -> s.split(" ").length == 1);
+                    return Arrays.stream(synonyms).filter(s -> s.split(" ").length == 1).sorted();
                 }
             }
         } catch (IOException e) {
@@ -49,5 +49,13 @@ public class SynonymManager {
             System.out.println("I dunno");
         }
         return Stream.empty();
+    }
+
+    public String getKeyWordSynonym(String input){
+        if(input.compareTo(getSynonyms(input).findFirst().orElse("")) < 0){
+            return input;
+        } else{
+            return getSynonyms(input).findFirst().orElse("");
+        }
     }
 }
