@@ -52,6 +52,11 @@ public class SynonymManager {
         return Stream.empty();
     }
 
+    /**
+     * gets the lesser lexicographically synonym
+     * @param input
+     * @return
+     */
     public String getKeyWordSynonym(String input){
         if(map.containsKey(input)){
             return map.get(input);

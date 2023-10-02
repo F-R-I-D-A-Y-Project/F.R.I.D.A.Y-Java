@@ -1,20 +1,34 @@
 package model;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-import model.SynonymManager;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
+/**
+ * Response Generator of NLP Model
+ */
 public class ResponseBuilder {
-    private SynonymManager synonymManager;
+    /**
+     * Dictionary storing all existing words in database
+     */
     private Set<String> dictionary;
-    private boolean isPopulated = false;
+    /**
+     * Flag that informs if model was already trained
+     */
+    private boolean isTrained = false;
+    /**
+     * String Array containing all questions stored in database
+     */
     private String[] databaseTexts;
+    /**
+     * Path to database
+     */
     private String pathToDataSet;
 
+    /**
+     * ResponseBuilder constructor. Stores the dataset path
+     * @param pathToDataSet
+     * @throws IOException
+     */
     public ResponseBuilder(String pathToDataSet) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(pathToDataSet))) {
             this.pathToDataSet = pathToDataSet;
@@ -22,21 +36,18 @@ public class ResponseBuilder {
             System.out.println("Could not read dataset file");
             throw e;
         }
-
-        try {
-            this.synonymManager = new SynonymManager("archive/synonyms.csv");
-        } catch (IOException e) {
-            System.out.println("Could not read dataset file");
-            throw e;
-        }
     }
 
+    /**
+     * populates dictionary attribute, training model to be used
+     */
     private void populateDictionary() {
         try (BufferedReader reader = new BufferedReader(new FileReader(pathToDataSet))) {
             ArrayList<String> databaseTexts = new ArrayList<>();
             Set<String> dictionary = new HashSet<>();
 
             String line;
+            reader.readLine();
             while((line = reader.readLine()) != null){
                 String question = line.split(";")[0];
                 databaseTexts.add(question);
@@ -48,17 +59,22 @@ public class ResponseBuilder {
             }
             this.dictionary = dictionary;
             this.databaseTexts = databaseTexts.toArray(new String[10000]);
-            isPopulated = true;
+            isTrained = true;
         } catch (IOException e) {
             System.out.println("Could not read dataset file");
         }
     }
 
+    /**
+     * predicted answer to the question prompted by user. Uses the Similarity method to predict the closest
+     * question to the one prompted by user
+     * @param input
+     * @return
+     */
     public String get(String input) {
-        if (!isPopulated) {
+        if (!isTrained) {
             populateDictionary();
         }
-
 
         double[][] featureVectors = new double[databaseTexts.length][dictionary.size()];
         for (int i = 0; i < databaseTexts.length; i++) {
@@ -102,15 +118,26 @@ public class ResponseBuilder {
         return "";
     }
 
+    /**
+     * Preprocesses questions stored in database
+     * @param text
+     * @return
+     */
     private String[] preprocessText(String text) {
         try {
             text = text.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").trim();
-            return synonym(text.split("\\s+"));
+            return (text.split("\\s+"));
         } catch (NullPointerException e){
             return new String[0];
         }
     }
 
+    /**
+     * returns the index of a question in the database
+     * @param s
+     * @param st
+     * @return
+     */
     private int getWordIndex(String s, Set<String> st) {
         int index = 0;
         for (String dictWord : st) {
@@ -122,6 +149,12 @@ public class ResponseBuilder {
         return -1;
     }
 
+    /**
+     * calculates the similarity between two vectors
+     * @param vectorA
+     * @param vectorB
+     * @return
+     */
     private double calculateCosineSimilarity(double[] vectorA, double[] vectorB) {
         double dotProduct = 0.0;
         double normA = 0.0;
@@ -138,13 +171,5 @@ public class ResponseBuilder {
         }
 
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-    }
-
-    private String[] synonym(String[] texts){
-        List<String> strs = new ArrayList<>();
-        for(String text: texts){
-            strs.add(synonymManager.getKeyWordSynonym(text));
-        }
-        return strs.toArray(new String[10000]);
     }
 }

@@ -12,8 +12,18 @@ import java.io.InputStream;
  */
 public class Model {
 
+    /**
+     * Pre-built InputStream OpenNLP Model
+     */
     private InputStream modelIn;
+
+    /**
+     * Pre-built OpenNLP Sentence Model
+     */
     private SentenceModel mod;
+    /**
+     * Sentence detector that splits the sentences in the input
+     */
     private final SentenceDetectorME detector;
 
     /**

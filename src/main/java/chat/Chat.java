@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import model.Model;
@@ -14,22 +15,43 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Chat extends JFrame{
 
+    /**
+     * Chat area where the user's prompts and bot's responses are stored
+     */
     private final JTextArea chatArea = new JTextArea();
+    /**
+     * Field where user writes their questions
+     */
     private final JTextField chatBox = new JTextField();
+    /**
+     * NLP Model used for Bot
+     */
     private final Model model;
-    private String lastAnswer = "";
+
+    /**
+     * stores the last question made by the user
+     */
+    private String lastQuestion;
+
+    /**
+     * stores the last answer returned by the bot
+     */
+    private String lastAnswer;
+
+    /**
+     * Action Listener that moves prompt from TextBox to TextArea. It also stores the
+     * question made by the user and result by the bot
+     */
     private final ActionListener AL = e -> {
         String text = chatBox.getText();
         if (text.isEmpty()) {
             return;
         }
-        else if(text.equals(lastAnswer)){
-
-        }
         chatArea.append("YOU: " + text + "\n\n");
-        chatArea.append("F.R.I.D.A.Y: " + botResponse(text) + "\n\n");
+        lastAnswer = botResponse(text);
+        chatArea.append("F.R.I.D.A.Y: " + lastAnswer + "\n\n" + "Please say 'yes' if you are satisfied with your answer\n\n");
         chatBox.setText("");
-        lastAnswer = text;
+        lastQuestion = text;
     };
 
 
@@ -139,11 +161,22 @@ public class Chat extends JFrame{
     }
 
     /**
-     * Returns the bot's response to the user's input.
+     * Returns the bot's response to the user's input. Stores lastQuestion and lastAnswer to the database
+     * if the user so desires (by prompting 'yes')
      * @param input: String
      * @return String
      */
     private String botResponse(String input){
+        if(input.equals("yes")){
+            try{
+                FileWriter fileWriter = new FileWriter("dataBase.csv", true);
+                fileWriter.write("\n" + lastQuestion + "; " + lastAnswer);
+                fileWriter.close();
+            }
+            catch (IOException e){
+
+            }
+        }
         return model.answerTo(input);
     }
 }
