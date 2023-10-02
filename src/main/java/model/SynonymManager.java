@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 
@@ -16,6 +17,7 @@ import java.util.stream.Stream;
 public class SynonymManager {
 
     private final String pathToDataSet;
+    private final HashMap<String,String> map = new HashMap<>();
 
     public SynonymManager(String pathToDataSet) throws IOException{
         try (BufferedReader reader = new BufferedReader(new FileReader(pathToDataSet))) {
@@ -39,8 +41,7 @@ public class SynonymManager {
             while((line = reader.readNext()) != null){
                 if(line[0].equals(input)){
                     String[] synonyms = line[2].split(";");
-                    System.out.println(Arrays.toString(synonyms));
-                    return Arrays.stream(synonyms).filter(s -> s.split(" ").length == 1).sorted();
+                    return Arrays.stream(synonyms).filter(s -> s.split("[ |]").length == 1).sorted();
                 }
             }
         } catch (IOException e) {
@@ -52,10 +53,16 @@ public class SynonymManager {
     }
 
     public String getKeyWordSynonym(String input){
-        if(input.compareTo(getSynonyms(input).findFirst().orElse("")) < 0){
+        if(map.containsKey(input)){
+            return map.get(input);
+        }
+        String aux = getSynonyms(input).findFirst().orElse("");
+        if(input.compareTo(aux) < 0){
+            map.put(aux,input);
             return input;
         } else{
-            return getSynonyms(input).findFirst().orElse("");
+            map.put(input,aux);
+            return aux;
         }
     }
 }

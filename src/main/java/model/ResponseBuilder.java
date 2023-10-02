@@ -6,10 +6,7 @@ import model.SynonymManager;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ResponseBuilder {
     private SynonymManager synonymManager;
@@ -44,14 +41,8 @@ public class ResponseBuilder {
                 String question = line.split(";")[0];
                 databaseTexts.add(question);
             }
-            int count = 0;
-            for (String databaseText : databaseTexts) {
-                if(databaseText == null){
-                    System.out.println(count);
-                    continue;
-                }
-                count+=1;
 
+            for (String databaseText : databaseTexts) {
                 String[] words = preprocessText(databaseText);
                 dictionary.addAll(Arrays.asList(words));
             }
@@ -108,14 +99,16 @@ public class ResponseBuilder {
         } catch (IOException e) {
             System.out.println("Could not read dataset file");
         }
-//        System.out.println("Frase mais similar: " + databaseTexts[mostSimilarIndex]);
-//        System.out.println("Similaridade de Cosseno: " + maxSimilarity);
         return "";
     }
 
     private String[] preprocessText(String text) {
-        text = text.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").trim();
-        return text.split("\\s+");
+        try {
+            text = text.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").trim();
+            return synonym(text.split("\\s+"));
+        } catch (NullPointerException e){
+            return new String[0];
+        }
     }
 
     private int getWordIndex(String s, Set<String> st) {
@@ -145,5 +138,13 @@ public class ResponseBuilder {
         }
 
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+    }
+
+    private String[] synonym(String[] texts){
+        List<String> strs = new ArrayList<>();
+        for(String text: texts){
+            strs.add(synonymManager.getKeyWordSynonym(text));
+        }
+        return strs.toArray(new String[10000]);
     }
 }
