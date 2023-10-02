@@ -49,7 +49,11 @@ public class Chat extends JFrame{
         }
         chatArea.append("YOU: " + text + "\n\n");
         lastAnswer = botResponse(text);
-        chatArea.append("F.R.I.D.A.Y: " + lastAnswer + "\n\n" + "Please say 'yes' if you are satisfied with your answer\n\n");
+        if(!lastAnswer.equals(" ")){
+            chatArea.append("F.R.I.D.A.Y: " + lastAnswer + "\n\n" + "Please say 'yes' if you are satisfied with your answer\n\n");
+        } else{
+            chatArea.append("F.R.I.D.A.Y: please, ask me anything!\n\n");
+        }
         chatBox.setText("");
         lastQuestion = text;
     };
@@ -176,7 +180,10 @@ public class Chat extends JFrame{
             catch (IOException e){
 
             }
+            return " ";
+        } else{
+            return model.answerTo(input);
         }
-        return model.answerTo(input);
+
     }
 }
