@@ -35,28 +35,31 @@ public class ResponseBuilder {
     }
 
     private void populateDictionary() {
-        try (CSVReader reader = new CSVReader(new FileReader(pathToDataSet))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(pathToDataSet))) {
             ArrayList<String> databaseTexts = new ArrayList<>();
             Set<String> dictionary = new HashSet<>();
 
-            String[] line;
-            while((line = reader.readNext()) != null){
-                databaseTexts.add(line[0]);
+            String line;
+            while((line = reader.readLine()) != null){
+                String question = line.split(";")[0];
+                databaseTexts.add(question);
             }
-
+            int count = 0;
             for (String databaseText : databaseTexts) {
+                if(databaseText == null){
+                    System.out.println(count);
+                    continue;
+                }
+                count+=1;
+
                 String[] words = preprocessText(databaseText);
                 dictionary.addAll(Arrays.asList(words));
             }
-
             this.dictionary = dictionary;
             this.databaseTexts = databaseTexts.toArray(new String[10000]);
             isPopulated = true;
-            System.out.println(dictionary);
         } catch (IOException e) {
             System.out.println("Could not read dataset file");
-        } catch (CsvValidationException e){
-            System.out.println("I dunno");
         }
     }
 
@@ -94,17 +97,16 @@ public class ResponseBuilder {
             }
         }
 
-        try (CSVReader reader = new CSVReader(new FileReader(pathToDataSet))) {
-            String[] line;
-            while((line = reader.readNext()) != null){
-                if(line[0].equals(databaseTexts[mostSimilarIndex])){
-                    return line[1];
+        try (BufferedReader reader = new BufferedReader(new FileReader(pathToDataSet))) {
+            String line;
+            while((line = reader.readLine()) != null){
+                String[] splitLine = line.split(";");
+                if(splitLine[0].equals(databaseTexts[mostSimilarIndex])){
+                    return splitLine[1];
                 }
             }
         } catch (IOException e) {
             System.out.println("Could not read dataset file");
-        } catch (CsvValidationException e){
-            System.out.println("I dunno");
         }
 //        System.out.println("Frase mais similar: " + databaseTexts[mostSimilarIndex]);
 //        System.out.println("Similaridade de Cosseno: " + maxSimilarity);
