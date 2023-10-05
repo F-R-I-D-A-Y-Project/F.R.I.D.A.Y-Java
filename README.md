@@ -24,4 +24,4 @@ F.R.I.D.A.Y is compatible with Java 20+
 
 ## Documentation
 
-The documentation can be found [here](https://github.com/F-R-I-D-A-Y-Project/F.R.I.D.A.Y/tree/main/docs)
+The documentation can be found [here](https://github.com/F-R-I-D-A-Y-Project/F.R.I.D.A.Y-Java/tree/main/docs)
