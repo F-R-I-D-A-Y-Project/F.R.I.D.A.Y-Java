@@ -5,7 +5,7 @@ Java project developed for the discipline "Laboratório de Programação 2", at 
 
 ## About
 
-F.R.I.D.A.Y is a personal assistant AI developed in Java...
+F.R.I.D.A.Y is chatbot with AI developed in Java
 
 ## Team members
 
@@ -15,7 +15,7 @@ F.R.I.D.A.Y is a personal assistant AI developed in Java...
 
 ## Compatibility
 
-As of now, F.R.I.D.A.Y is compatible with Java (20-23)
+F.R.I.D.A.Y is compatible with Java 20+
 
 ### Frameworks used
 
